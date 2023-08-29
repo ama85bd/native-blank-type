@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Colors from '../../constants/colors';
 
 interface ICardProps {
@@ -10,13 +10,14 @@ const Card: React.FunctionComponent<ICardProps> = ({ children }) => {
 };
 
 export default Card;
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   card: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    marginTop: 36,
+    marginTop: deviceWidth < 380 ? 18 : 36,
     marginHorizontal: 24,
     backgroundColor: Colors.primary800,
     borderRadius: 8,
