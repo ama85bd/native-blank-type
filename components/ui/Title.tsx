@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Platform } from 'react-native';
 
 interface ITitleProps {
   children: any;
@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
-    borderWidth: 2,
+    // borderWidth: Platform.OS !== 'android' ? 0 : 2,
+    borderWidth: Platform.select({ ios: 2, android: 0 }),
     borderColor: 'white',
     padding: 12,
     maxWidth: '80%',

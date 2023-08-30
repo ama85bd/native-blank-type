@@ -1,4 +1,12 @@
-import { View, StyleSheet, Text, Alert, FlatList } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Alert,
+  FlatList,
+  useWindowDimensions,
+  Dimensions,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import Title from '../components/ui/Title';
@@ -33,6 +41,8 @@ const GameSreen: React.FunctionComponent<IGameSreenProps> = ({
   const initialGuess = generateRandomBetween(1, 100, chosenNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
+
+  const { width, height } = useWindowDimensions();
   useEffect(() => {
     if (currentGuess === chosenNumber) {
       onGameOver(guessRounds.length);
@@ -72,13 +82,12 @@ const GameSreen: React.FunctionComponent<IGameSreenProps> = ({
 
   const guessRoundsListLength = guessRounds.length;
 
-  return (
-    <View style={styles.screen}>
-      <Title>Opponent's Guess</Title>
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.instructionText}>
-          Higher or lower
+          Higher or lower?
         </InstructionText>
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
@@ -93,6 +102,33 @@ const GameSreen: React.FunctionComponent<IGameSreenProps> = ({
           </View>
         </View>
       </Card>
+    </>
+  );
+
+  if (width > 500) {
+    content = (
+      <>
+        <View style={styles.buttonsContainerWide}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Ionicons name='md-remove' size={24} color='white' />
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+              <Ionicons name='md-add' size={24} color='white' />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+
+  return (
+    <View style={styles.screen}>
+      <Title>Opponent's Guess</Title>
+      {content}
       <View style={styles.listContainer}>
         {/* {guessRounds.map((guessRound) => (
           <Text key={guessRound}>{guessRound}</Text>
@@ -113,12 +149,12 @@ const GameSreen: React.FunctionComponent<IGameSreenProps> = ({
 };
 
 export default GameSreen;
+const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 30,
-    marginVertical: 16,
     alignItems: 'center',
   },
   instructionText: {
@@ -126,6 +162,10 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
+  },
+  buttonsContainerWide: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   buttonContainer: {
     flex: 1,
