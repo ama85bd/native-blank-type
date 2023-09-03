@@ -1,6 +1,4 @@
 import { StyleSheet, FlatList, View, Text } from 'react-native';
-import { CATEGORIES } from '../data/dummy-data';
-import CategoryGridTile from '../components/CategoryGridTile';
 
 interface IMealDetailsProps {
   duration: any;
