@@ -18,6 +18,7 @@ import IconButton from '../components/IconButton';
 
 interface IMealDetailScreenProps {
   route: any;
+  // mealId: any;
   navigation: NavigationProp<ParamListBase>;
 }
 
@@ -25,8 +26,10 @@ const MealDetailScreen: React.FunctionComponent<IMealDetailScreenProps> = ({
   route,
   navigation,
 }) => {
-  const mealId = route.params.mealId;
+  const mealId = route.params.mealId.route.params.mealId;
   const seletedMeal = MEALS.find((meal) => meal.id === mealId);
+  console.log('mealId==##', mealId);
+  console.log('seletedMeal==', seletedMeal);
 
   function headerButtonPressHandler() {
     console.log('Pressed!');
@@ -46,6 +49,7 @@ const MealDetailScreen: React.FunctionComponent<IMealDetailScreenProps> = ({
     });
   }, [navigation, headerButtonPressHandler]);
   return (
+    // <Text>{mealId}</Text>
     <ScrollView style={styles.rootContainer}>
       <Image style={styles.image} source={{ uri: seletedMeal?.imageUrl }} />
       <Text style={styles.title}>{seletedMeal?.title}</Text>
