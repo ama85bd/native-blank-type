@@ -1,12 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import UserScreen from './screens/UserScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
+import { Ionicons } from '@expo/vector-icons';
+
+const BottomTab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <StatusBar style='light' />
+      <BottomTab.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: '#32064d' },
+          headerTintColor: 'white',
+          tabBarActiveTintColor: '#ee1983',
+        }}
+        initialRouteName='Welcome'
+      >
+        <BottomTab.Screen
+          name='Welcome'
+          component={WelcomeScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name='home' color={color} size={size} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name='User'
+          component={UserScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name='person' color={color} size={size} />
+            ),
+          }}
+        />
+      </BottomTab.Navigator>
+    </NavigationContainer>
   );
 }
 
