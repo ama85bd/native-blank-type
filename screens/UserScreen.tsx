@@ -1,14 +1,24 @@
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-function UserScreen() {
+interface IUserScreenProps {
+  navigation: any;
+}
+
+const UserScreen: React.FunctionComponent<IUserScreenProps> = ({
+  navigation,
+}) => {
+  function openDrawerHandler() {
+    navigation.toggleDrawer();
+  }
   return (
     <View style={styles.rootContainer}>
       <Text>
         This is the <Text style={styles.highlight}>"User"</Text> screen!
       </Text>
+      <Button title='Open Drawer' onPress={openDrawerHandler} />
     </View>
   );
-}
+};
 
 export default UserScreen;
 
