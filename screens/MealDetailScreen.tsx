@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -15,6 +15,8 @@ import Subtitle from '../components/MealDetail/Subtitle';
 import List from '../components/MealDetail/List';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import IconButton from '../components/IconButton';
+import { FavoritesContext } from '../store/context/favorite-context';
+import { IContext } from '../models/context';
 
 interface IMealDetailScreenProps {
   route: any;
@@ -26,11 +28,18 @@ const MealDetailScreen: React.FunctionComponent<IMealDetailScreenProps> = ({
   route,
   navigation,
 }) => {
+  const favoriteMealContext: IContext = useContext(FavoritesContext);
   const mealId = route.params.mealId;
   const seletedMeal = MEALS.find((meal) => meal.id === mealId);
 
-  function headerButtonPressHandler() {
-    console.log('Pressed!');
+  const mealisFavorie = favoriteMealContext.ids.includes(mealId);
+
+  function changeFavoriteStatusHandler() {
+    if (mealisFavorie) {
+      favoriteMealContext.removeFavorite(mealId);
+    } else {
+      favoriteMealContext.addFavorite(mealId);
+    }
   }
 
   useLayoutEffect(() => {
@@ -38,14 +47,14 @@ const MealDetailScreen: React.FunctionComponent<IMealDetailScreenProps> = ({
       headerRight: () => {
         return (
           <IconButton
-            icon='star'
+            icon={mealisFavorie ? 'star' : 'star-outline'}
             color='white'
-            onPress={headerButtonPressHandler}
+            onPress={changeFavoriteStatusHandler}
           />
         );
       },
     });
-  }, [navigation, headerButtonPressHandler]);
+  }, [navigation, changeFavoriteStatusHandler]);
   return (
     // <Text>{mealId}</Text>
     <ScrollView style={styles.rootContainer}>

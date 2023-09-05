@@ -1,7 +1,7 @@
-import { StyleSheet, FlatList, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { CATEGORIES, MEALS } from '../data/dummy-data';
-import MealItem from '../components/MealItem';
 import { useLayoutEffect } from 'react';
+import MealList from '../components/MealList/MealList';
 
 interface IMealsOverviewscreenProps {
   route: any;
@@ -27,35 +27,9 @@ const MealsOverviewscreen: React.FunctionComponent<
     });
   }, [catId, navigation]);
 
-  function renderMealItem(itemData: any) {
-    const item = itemData.item;
-    const mealItemProps = {
-      id: item.id,
-      title: item.title,
-      imageUrl: item.imageUrl,
-      duration: item.duration,
-      complexity: item.complexity,
-      affordability: item.affordability,
-    };
-    return <MealItem {...mealItemProps} />;
-  }
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={displayedMeals}
-        keyExtractor={(item) => item.id}
-        renderItem={renderMealItem}
-      />
-    </View>
-  );
+  return <MealList items={displayedMeals} />;
 };
 
 export default MealsOverviewscreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-});
+const styles = StyleSheet.create({});

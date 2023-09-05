@@ -9,11 +9,10 @@ import MealDetailScreen from './screens/MealDetailScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import FavoritesScreen from './screens/FavoritesScreen';
 import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FavoritesContextProvider from './store/context/favorite-context';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
-const BottomTab = createBottomTabNavigator();
 
 function DrawerNavigator() {
   return (
@@ -53,91 +52,42 @@ function DrawerNavigator() {
   );
 }
 
-function BottomTabNavigator({ route }: any) {
-  // const mealId = route.params.mealId;
-  return (
-    <BottomTab.Navigator
-      sceneContainerStyle={{ backgroundColor: '#614a3c' }}
-      screenOptions={{
-        headerStyle: { backgroundColor: '#4b1d03' },
-        headerTintColor: 'white',
-
-        tabBarStyle: { backgroundColor: '#ebd6ca' },
-
-        tabBarInactiveTintColor: '#4b1d03',
-        tabBarActiveTintColor: '#ebd6ca',
-        tabBarActiveBackgroundColor: '#6d4f3d',
-      }}
-    >
-      <BottomTab.Screen
-        name='MealsDetaill'
-        component={MealDetailScreen}
-        initialParams={{ mealId: route.params.mealId }}
-        options={{
-          title: 'About the Meal',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='list' color={color} size={size} />
-          ),
-        }}
-      />
-      <BottomTab.Screen
-        name='TabHome'
-        component={DrawerNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name='home' color={color} size={size} />
-          ),
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-}
-
 export default function App() {
   return (
     <>
       <StatusBar style='light' />
-      {/* <SafeAreaView style={styles.rootScreen}> */}
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: '#4b1d03' },
-            headerTintColor: 'white',
-            contentStyle: { backgroundColor: '#614a3c' },
-          }}
-        >
-          <Stack.Screen
-            name='Drawer'
-            component={DrawerNavigator}
-            options={{
-              title: 'All Categories',
-              headerShown: false,
+      <FavoritesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: '#4b1d03' },
+              headerTintColor: 'white',
+              contentStyle: { backgroundColor: '#614a3c' },
             }}
-          />
-          <Stack.Screen name='MealsOverview' component={MealsOverviewscreen} />
-          <Stack.Screen
-            name='MealsDetail'
-            component={BottomTabNavigator}
-            options={{
-              title: 'About the Meal',
-              headerShown: false,
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name='Drawer'
+              component={DrawerNavigator}
+              options={{
+                title: 'All Categories',
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name='MealsOverview'
+              component={MealsOverviewscreen}
+            />
+            <Stack.Screen
+              name='MealsDetail'
+              component={MealDetailScreen}
+              options={{
+                title: 'About the Meal',
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FavoritesContextProvider>
       {/* </SafeAreaView> */}
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  rootScreen: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
