@@ -53,7 +53,7 @@ function DrawerNavigator() {
   );
 }
 
-function BottomTabNavigator(route: any) {
+function BottomTabNavigator({ route }: any) {
   // const mealId = route.params.mealId;
   return (
     <BottomTab.Navigator
@@ -72,7 +72,7 @@ function BottomTabNavigator(route: any) {
       <BottomTab.Screen
         name='MealsDetaill'
         component={MealDetailScreen}
-        initialParams={{ mealId: route }}
+        initialParams={{ mealId: route.params.mealId }}
         options={{
           title: 'About the Meal',
           tabBarIcon: ({ color, size }) => (

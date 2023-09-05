@@ -26,10 +26,8 @@ const MealDetailScreen: React.FunctionComponent<IMealDetailScreenProps> = ({
   route,
   navigation,
 }) => {
-  const mealId = route.params.mealId.route.params.mealId;
+  const mealId = route.params.mealId;
   const seletedMeal = MEALS.find((meal) => meal.id === mealId);
-  console.log('mealId==##', mealId);
-  console.log('seletedMeal==', seletedMeal);
 
   function headerButtonPressHandler() {
     console.log('Pressed!');
