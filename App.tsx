@@ -45,11 +45,11 @@ export default function App() {
   }
   return (
     <>
-      <StatusBar style='light' />
+      <StatusBar style='dark' />
       <View style={styles.appContainer}>
         <Button
           title='Add New Goal'
-          color='#5e0acc'
+          color='#5e0cc8'
           onPress={startAddGoalHandler}
         />
         <GoalInput
