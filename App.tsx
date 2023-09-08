@@ -80,6 +80,7 @@ export default function App() {
   function startNewGameHandler() {
     setUserNumber(null);
     setGuessRounds(0);
+    setGameIsOver(false);
   }
 
   let screen = <StartGameSreen onPickedNumber={pickedNumberHandler} />;
