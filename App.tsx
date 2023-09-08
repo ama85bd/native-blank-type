@@ -3,6 +3,7 @@ import {
   Button,
   FlatList,
   GestureResponderEvent,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -45,11 +46,11 @@ export default function App() {
   }
   return (
     <>
-      <StatusBar style='dark' />
+      <StatusBar style='light' />
       <View style={styles.appContainer}>
         <Button
           title='Add New Goal'
-          color='#5e0cc8'
+          color={Platform.OS === 'android' ? '#6f18e2' : '#c09eed'}
           onPress={startAddGoalHandler}
         />
         <GoalInput

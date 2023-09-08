@@ -7,6 +7,7 @@ import {
   GestureResponderEvent,
   Modal,
   Image,
+  Platform,
 } from 'react-native';
 
 interface IGoalInputProps {
@@ -44,10 +45,14 @@ const GoalInput: React.FunctionComponent<IGoalInputProps> = ({
         />
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <Button title='Add Goal' onPress={addGoalHandler} color='#5e0acc' />
+            <Button
+              title='Add Goal'
+              onPress={addGoalHandler}
+              color={Platform.OS === 'android' ? '#6f18e2' : '#c09eed'}
+            />
           </View>
           <View style={styles.button}>
-            <Button title='Cancel' onPress={cancerModal} color='#f31282' />
+            <Button title='Cancel' onPress={cancerModal} color='#f7037d' />
           </View>
         </View>
       </View>
