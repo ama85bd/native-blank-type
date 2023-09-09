@@ -1,4 +1,4 @@
-const GOOGLE_API_KEY = 'AIzaSyAClOiFmDBUGiA06ce9zCvpgBidspKThCQ';
+const GOOGLE_API_KEY = '';
 interface ILocationProps {
   place: any;
 }
