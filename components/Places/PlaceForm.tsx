@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 import { Colors } from '../../constants/colors';
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
+import Button from '../UI/Button';
 
 interface IPlaceFormProps {
   place: any;
@@ -18,9 +19,22 @@ interface IPlaceFormProps {
 
 const PlaceForm: React.FunctionComponent = () => {
   const [enteredText, setEnteredText] = useState('');
+  const [selectImage, setSelectImage] = useState();
+  const [pickedLocation, setPickedLocation] = useState();
 
   function changeTitleHandler(enteredText: any) {
     setEnteredText(enteredText);
+  }
+  function imageTakenHandler(imgageUri: any) {
+    setSelectImage(imgageUri);
+  }
+  const locationTakenHandler = useCallback((location: any) => {
+    setPickedLocation(location);
+  }, []);
+  function savePlaceHandler() {
+    console.log(enteredText);
+    console.log(selectImage);
+    console.log(pickedLocation);
   }
   return (
     <ScrollView style={styles.form}>
@@ -32,8 +46,9 @@ const PlaceForm: React.FunctionComponent = () => {
           value={enteredText}
         />
       </View>
-      <ImagePicker />
-      <LocationPicker />
+      <ImagePicker onImageTaken={imageTakenHandler} />
+      <LocationPicker onLocationPick={locationTakenHandler} />
+      <Button onPress={savePlaceHandler}>Add Place</Button>
     </ScrollView>
   );
 };

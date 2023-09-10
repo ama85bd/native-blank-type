@@ -15,10 +15,12 @@ import {
 } from '@react-navigation/native';
 
 interface ILocationPickerProps {
-  place: any;
+  onLocationPick: (location: any) => void;
 }
 
-const LocationPicker: React.FunctionComponent = () => {
+const LocationPicker: React.FunctionComponent<ILocationPickerProps> = ({
+  onLocationPick,
+}) => {
   const isFocused = useIsFocused();
   const navigation: any = useNavigation();
   const route: any = useRoute();
@@ -37,6 +39,10 @@ const LocationPicker: React.FunctionComponent = () => {
     }
   }, [route, isFocused]);
 
+  useEffect(() => {
+    onLocationPick(pickedLocation);
+  }, [pickedLocation, onLocationPick]);
+
   async function verifyPermissions() {
     if (
       locationPermissionInformation?.status === PermissionStatus.UNDETERMINED
@@ -50,8 +56,9 @@ const LocationPicker: React.FunctionComponent = () => {
         'Insufficient Permissions!',
         'You need to grant location permissions to use this app'
       );
+      const permissionResponse = await requestPermission();
 
-      return false;
+      return permissionResponse.granted;
     }
     return true;
   }

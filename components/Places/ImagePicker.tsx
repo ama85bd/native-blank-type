@@ -19,10 +19,12 @@ import {
 import OutlineButton from '../UI/OutlineButton';
 
 interface IImagePickerProps {
-  place: any;
+  onImageTaken: (imgageUri: any) => void;
 }
 
-const ImagePicker: React.FunctionComponent = () => {
+const ImagePicker: React.FunctionComponent<IImagePickerProps> = ({
+  onImageTaken,
+}) => {
   const [pickedImage, setPickedImage] = useState('');
 
   const [cameraPermissionInformation, requestPermission] =
@@ -35,12 +37,11 @@ const ImagePicker: React.FunctionComponent = () => {
       return permissionResponse.granted;
     }
     if (cameraPermissionInformation?.status === PermissionStatus.DENIED) {
-      Alert.alert(
-        'Insufficient Permissions!',
-        'You need to grant camera permissions to use this app'
-      );
+      Alert.alert('Permission Denied!', 'You need to grant camera access');
+      const permissionResponse = await requestPermission();
 
-      return false;
+      return permissionResponse.granted;
+      //   return false;
     }
     return true;
   }
@@ -58,6 +59,7 @@ const ImagePicker: React.FunctionComponent = () => {
       quality: 0.5,
     });
     setPickedImage(image.uri);
+    onImageTaken(image.uri);
   }
 
   let imagePreview = <Text>No Image taken yet.</Text>;
