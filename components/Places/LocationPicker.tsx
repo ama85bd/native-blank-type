@@ -7,7 +7,7 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from 'expo-location';
-import { getMapPreview } from '../../utils/location';
+import { getAddress, getMapPreview } from '../../utils/location';
 import {
   useNavigation,
   useRoute,
@@ -40,7 +40,16 @@ const LocationPicker: React.FunctionComponent<ILocationPickerProps> = ({
   }, [route, isFocused]);
 
   useEffect(() => {
-    onLocationPick(pickedLocation);
+    async function handleLocation() {
+      if (pickedLocation) {
+        const address = await getAddress(
+          pickedLocation.lat,
+          pickedLocation.lon
+        );
+        onLocationPick({ ...pickedLocation, address: address });
+      }
+    }
+    handleLocation();
   }, [pickedLocation, onLocationPick]);
 
   async function verifyPermissions() {

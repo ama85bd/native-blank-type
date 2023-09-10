@@ -12,12 +12,15 @@ import { Colors } from '../../constants/colors';
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
 import Button from '../UI/Button';
+import { Place } from '../../models/Place';
 
 interface IPlaceFormProps {
-  place: any;
+  onCreatePlace: (placeData: any) => void;
 }
 
-const PlaceForm: React.FunctionComponent = () => {
+const PlaceForm: React.FunctionComponent<IPlaceFormProps> = ({
+  onCreatePlace,
+}) => {
   const [enteredText, setEnteredText] = useState('');
   const [selectImage, setSelectImage] = useState();
   const [pickedLocation, setPickedLocation] = useState();
@@ -32,9 +35,9 @@ const PlaceForm: React.FunctionComponent = () => {
     setPickedLocation(location);
   }, []);
   function savePlaceHandler() {
-    console.log(enteredText);
-    console.log(selectImage);
-    console.log(pickedLocation);
+    const placeData = new Place(enteredText, selectImage, pickedLocation);
+
+    onCreatePlace(placeData);
   }
   return (
     <ScrollView style={styles.form}>

@@ -18,9 +18,10 @@ const PlacesList: React.FunctionComponent<IPlacesListProps> = ({ places }) => {
   }
   return (
     <FlatList
+      style={styles.list}
       data={places}
       keyExtractor={(item) => item.id}
-      renderItem={(item) => <PlaceItem place={item} />}
+      renderItem={(item) => <PlaceItem place={item.item} />}
     />
   );
 };
@@ -28,6 +29,9 @@ const PlacesList: React.FunctionComponent<IPlacesListProps> = ({ places }) => {
 export default PlacesList;
 
 const styles = StyleSheet.create({
+  list: {
+    margin: 24,
+  },
   fallBackContainer: {
     flex: 1,
     justifyContent: 'center',
