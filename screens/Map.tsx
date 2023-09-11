@@ -5,17 +5,28 @@ import IconButton from '../components/UI/IconButton';
 
 interface IMapProps {
   navigation: any;
+  route: any;
 }
 
-const Map: React.FunctionComponent<IMapProps> = ({ navigation }) => {
-  const [selectedLocation, setSelectedLocation] = useState<any>();
+const Map: React.FunctionComponent<IMapProps> = ({ navigation, route }) => {
+  const initialLocation = route.params && {
+    lat: route.params.initialLat,
+    lon: route.params.initialLon,
+  };
+  const [selectedLocation, setSelectedLocation] =
+    useState<any>(initialLocation);
+
   const region = {
-    latitude: 23.7845177,
-    longitude: 90.3621518,
+    latitude: initialLocation ? initialLocation.lat : 23.7845177,
+    longitude: initialLocation ? initialLocation.lon : 90.3621518,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.421,
   };
   function selectLocationHandler(event: any) {
+    if (initialLocation) {
+      return;
+    }
+
     const lat = event.nativeEvent.coordinate.latitude;
     const lon = event.nativeEvent.coordinate.longitude;
     setSelectedLocation({
@@ -38,6 +49,10 @@ const Map: React.FunctionComponent<IMapProps> = ({ navigation }) => {
   }, [navigation, selectedLocation]);
 
   useLayoutEffect(() => {
+    if (initialLocation) {
+      return;
+    }
+
     navigation.setOptions({
       headerRight: ({ tintColor }: any) => (
         <IconButton
@@ -48,7 +63,7 @@ const Map: React.FunctionComponent<IMapProps> = ({ navigation }) => {
         />
       ),
     });
-  }, [navigation, savePickedLocationHandler]);
+  }, [navigation, savePickedLocationHandler, initialLocation]);
   return (
     <MapView
       style={styles.map}

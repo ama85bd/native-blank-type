@@ -18,7 +18,12 @@ const PlaceDetails: React.FunctionComponent<IPlaceDetailsProps> = ({
   const [fetchedPlace, setFetchedPlace] = useState<any>();
 
   const selectedPlaceId = route.params.placeId;
-  function showOnMapHandler() {}
+  function showOnMapHandler() {
+    navigation.navigate('Map', {
+      initialLat: fetchedPlace.location.lat,
+      initialLon: fetchedPlace.location.lon,
+    });
+  }
   useEffect(() => {
     async function loadPlaceData() {
       const place: any = await fetchPlaceDetails(selectedPlaceId);
