@@ -3,17 +3,16 @@ import { Colors } from '../../constants/colors';
 
 interface IPlaceItemProps {
   place: any;
-  onSelect?: () => void;
+  onSelect?: (id: any) => void;
 }
 
 const PlaceItem: React.FunctionComponent<IPlaceItemProps> = ({
   place,
   onSelect,
 }) => {
-  console.log('place', place);
   return (
     <Pressable
-      onPress={onSelect}
+      onPress={onSelect?.bind(this, place.id)}
       style={(pressed) => [styles.item, pressed && styles.pressed]}
     >
       <Image style={styles.image} source={{ uri: place.imageUri }} />

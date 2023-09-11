@@ -1,15 +1,16 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import PlaceForm from '../components/Places/PlaceForm';
+import { Place } from '../models/Place';
+import { insertPlace } from '../utils/database';
 
 interface IAddPlaceProps {
   navigation: any;
 }
 
 const AddPlace: React.FunctionComponent<IAddPlaceProps> = ({ navigation }) => {
-  function createPlaceHandler(place: any) {
-    navigation.navigate('AllPlaces', {
-      place: place,
-    });
+  async function createPlaceHandler(place: Place) {
+    await insertPlace(place);
+    navigation.navigate('AllPlaces');
   }
   return <PlaceForm onCreatePlace={createPlaceHandler} />;
 };
