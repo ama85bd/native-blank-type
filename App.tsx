@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { init } from './utils/database';
 import AppLoading from 'expo-app-loading';
 import PlaceDetails from './screens/PlaceDetails';
+import UserLocation from './screens/CellularInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ export default function App() {
             contentStyle: { backgroundColor: Colors.gray700 },
           }}
         >
+          {/* <Stack.Screen name='UserLocation' component={UserLocation} /> */}
           <Stack.Screen
             name='AllPlaces'
             component={AllPlaces}
