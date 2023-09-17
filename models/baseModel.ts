@@ -19,3 +19,8 @@ export interface ILoginCredential {
   name: string;
   companyName: string;
 }
+export interface ICompanyList {
+  companyId: string;
+  companyName: string;
+  id: string;
+}

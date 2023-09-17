@@ -5,22 +5,63 @@ import { useEffect, useState } from 'react';
 import { fetchPlaces } from '../utils/database';
 import Toast from 'react-native-toast-message';
 import showToast from '../utils/Toast';
-import { useAppDispatch } from '../services/store';
+import { useAppDispatch, useAppSelector } from '../services/store';
+import {
+  companyListSelector,
+  fetchCompanyList,
+} from '../features/company/getCompanyListSlice';
+import { IUserLogin } from '../models/baseModel';
 import { loginUser } from '../features/login/loginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { IUserLogin } from '../models/baseModel';
 
 interface IAllPlacesProps {
   route: any;
 }
 
 const AllPlaces: React.FunctionComponent<IAllPlacesProps> = ({ route }) => {
+  const [asyncStorage, setAsyncStorage] = useState(false);
   const dispatch = useAppDispatch();
+  const { companyListLoaded, status } = useAppSelector(
+    (state) => state.companyList
+  );
+  const companyList = useAppSelector(companyListSelector.selectAll);
+  console.log('companyList', companyList);
+
   const [loadedPlaces, setLoadedPlaces] = useState<any>([]);
   const isFocused = useIsFocused();
-  const value = AsyncStorage.getItem('user');
-  console.log('AsyncStorage value', value);
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user');
+      const tokenLGED = await AsyncStorage.getItem('tokenLGED');
+      const userRole = await AsyncStorage.getItem('userRole');
+      if (value !== null) {
+        console.log('Value retrieved successfully:', value);
+        console.log('tokenLGED retrieved successfully:', tokenLGED);
+        console.log('userRole retrieved successfully:', userRole);
+      } else {
+        console.log('Value not found.');
+      }
+    } catch (error) {
+      console.error('Error getting data:', error);
+    }
+  };
+
+  const data: IUserLogin = {
+    email: 'ashique@lged.gov.bd',
+    password: 'Lged@1234',
+  };
+  const rundispatch = async () => {
+    await dispatch(loginUser(data)).then((e) => {
+      console.log('e place all', e);
+      setAsyncStorage(true);
+    });
+  };
+  useEffect(() => {
+    rundispatch();
+
+    getData();
+  }, [rundispatch, data]);
+
   useEffect(() => {
     async function loadPlaces() {
       const places = await fetchPlaces();
@@ -35,30 +76,10 @@ const AllPlaces: React.FunctionComponent<IAllPlacesProps> = ({ route }) => {
       // ]);
     }
   }, [isFocused]);
-  const data: IUserLogin = {
-    email: 'ashique@lged.gov.bd',
-    password: 'Lged@1234',
-  };
-  const rundispatch = async () => {
-    await dispatch(loginUser(data));
-  };
 
-  const startLocationTracking = async () => {
-    const response = await axios.post(
-      'https://apidev.lged.gov.bd/api/auth/login',
-      {
-        email: 'ashique@lged.gov.bd',
-        password: 'Lged@1234',
-      }
-    );
-    console.log('response startLocationTracking', response);
-  };
   useEffect(() => {
-    rundispatch();
-  }, [rundispatch, data]);
-  useEffect(() => {
-    startLocationTracking();
-  }, []);
+    if (!companyListLoaded) dispatch(fetchCompanyList());
+  }, [companyListLoaded]);
 
   const showToastHere = () => {
     showToast('info', 'Hello', 'This is some something 👋');

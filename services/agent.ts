@@ -3,15 +3,16 @@ import showToast from '../utils/Toast';
 import { IResponseBase } from '../models/baseModel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// axios.defaults.baseURL = 'https://apidev.lged.gov.bd/api/';
 axios.defaults.baseURL = process.env.EXPO_PUBLIC_API_URL;
 console.log('process.env.EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL);
 const responseBody = (response: AxiosResponse) => response.data;
-console.log('responseBody', responseBody);
 
 axios.interceptors.request.use(async (config) => {
   const token: any = await AsyncStorage.getItem('tokenLGED')?.then((e: any) =>
     e.slice(1, -1)
   );
+  console.log('token agent', token);
   // console.log('user', user);
   // const token = store.getState().login.loginCredential?.token;
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -30,7 +31,7 @@ axios.interceptors.response.use(
   (error: AxiosError) => {
     const { data, status }: any = error.response!;
 
-    console.log('data err agent', data);
+    // console.log('data err agent', data);
     switch (status) {
       case 400:
         showToast('error', data.title);
@@ -52,11 +53,11 @@ axios.interceptors.response.use(
 //response handle
 function handleResponse(response: AxiosResponse<any>) {
   //do something with the response data
-  console.log('response agent', response);
+  // console.log('response agent', response);
   const { status, data } = response;
-  console.log('data res agent', data);
+  // console.log('data res agent', data);
   const { message } = data as IResponseBase<object>;
-  console.log('data messager agent', message);
+  // console.log('data messager agent', message);
   if (status === 201) {
     if (message !== null || message !== '') {
       showToast('error', message);
@@ -67,7 +68,7 @@ function handleResponse(response: AxiosResponse<any>) {
 
 //response error handle
 function errorResponse(error: any) {
-  console.log('error response agent', error);
+  // console.log('error response agent', error);
   if (error === undefined) {
     return Promise.reject(error);
   }

@@ -8,17 +8,13 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { loginSlice } from '../features/login/loginSlice';
-import {
-  TypedUseSelectorHook,
-  useDispatch,
-  useSelector,
-} from 'react-redux/es/exports';
-import rocketReducer from '../features/login/testSlice';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { companyListSlice } from '../features/company/getCompanyListSlice';
 
 export const store = configureStore({
   reducer: {
     login: loginSlice.reducer,
-    rockets: rocketReducer,
+    companyList: companyListSlice.reducer,
   },
 });
 
