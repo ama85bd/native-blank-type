@@ -12,27 +12,75 @@ import AppLoading from 'expo-app-loading';
 import PlaceDetails from './screens/PlaceDetails';
 import UserLocation from './screens/CellularInfo';
 import Toast from 'react-native-toast-message';
-import { store, useAppDispatch } from './services/store';
+// import { store, useAppDispatch } from './services/store';
 import { loginUser } from './features/login/loginSlice';
 import { Provider } from 'react-redux';
+import axios from 'axios';
+import { store } from './services/store';
 // import {EXPO_PUBLIC_API_URL} from '@env'
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [dbInitialized, setDbInitialized] = useState(false);
   // console.log(process.env.REACT_APP_API_URL);
 
-  const REACT_APP_API_URL: any = process.env.EXPO_PUBLIC_API_URL;
-  console.log('REACT_APP_API_URL', REACT_APP_API_URL);
+  // useEffect(() => {
+  //   const rundispatch = async () => {
+  //     await dispatch(
+  //       loginUser({
+  //         email: 'ashique@lged.gov.bd',
+  //         password: 'Lged@1234',
+  //       })
+  //     );
+  //   };
+  //   rundispatch();
+  // }, [dispatch]);
+
+  const startLocationTracking = async () => {
+    // const response: any = await axios
+    //   .get('https://apidev.lged.gov.bd/api/auth/GetAllCompanies')
+    //   .then((e) => {
+    //     console.log('eeee', e.data);
+    //   })
+    //   .catch((e) => {
+    //     console.log('e erororor', e);
+    //   });
+    try {
+      await axios
+        .get('https://apidev.lged.gov.bd/api/auth/GetAllCompanies')
+        .then((e) => {
+          console.log('eeee', e.data);
+        })
+        .catch((e) => {
+          console.log('e erororor', e);
+        });
+      // Handle the successful response
+    } catch (error) {
+      // Handle the error here
+      console.log('error error', error);
+    }
+    // const response: any = await axios
+    //   .post('https://apidev.lged.gov.bd/api/auth/login', {
+    //     email: 'ashique@lged.gov.bd',
+    //     password: 'Lged@1234',
+    //   })
+    //   .then((e) => {
+    //     console.log('eeee', e.data);
+    //   })
+    //   .catch((e) => {
+    //     console.log('e erororor', e);
+    //   });
+
+    // console.log('response startLocationTracking app tsx', response);
+  };
+
   useEffect(() => {
-    dispatch(
-      loginUser({
-        email: 'ashique@lged.gov.bd',
-        password: 'Lged@1234',
-      })
-    );
+    startLocationTracking();
+  }, []);
+
+  useEffect(() => {
     init()
       .then(() => {
         setDbInitialized(true);
@@ -50,7 +98,6 @@ export default function App() {
     <>
       <StatusBar style='dark' />
 
-      <Toast />
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator
@@ -100,6 +147,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
+      <Toast />
     </>
   );
 }

@@ -1,3 +1,11 @@
+// import { configureStore } from '@reduxjs/toolkit';
+
+// export const store = configureStore({
+//   reducer: {},
+// });
+
+// export const server = 'https://apidev.lged.gov.bd/api/auth/login';
+
 import { configureStore } from '@reduxjs/toolkit';
 import { loginSlice } from '../features/login/loginSlice';
 import {
@@ -5,10 +13,12 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux/es/exports';
+import rocketReducer from '../features/login/testSlice';
 
 export const store = configureStore({
   reducer: {
     login: loginSlice.reducer,
+    rockets: rocketReducer,
   },
 });
 
