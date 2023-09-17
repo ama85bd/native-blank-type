@@ -18,7 +18,10 @@ export const loginUser = createAsyncThunk<ILoginCredential, IUserLogin>(
   'login/loginUser',
   async (data, thunkAPI) => {
     try {
+      console.log('data', data);
       const user = await Auth.loginUser(data);
+      const dataFinal = await user.json();
+      console.log('dataFinal loginUser', dataFinal);
       await AsyncStorage.setItem('user', JSON.stringify(user.result));
       await AsyncStorage.setItem(
         'tokenLGED',
@@ -33,8 +36,6 @@ export const loginUser = createAsyncThunk<ILoginCredential, IUserLogin>(
         'companyId',
         JSON.stringify(user.result.companyId)
       );
-      const value = await AsyncStorage.getItem('user');
-      console.log('AsyncStorage value', value);
       return user.result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data });
@@ -42,26 +43,27 @@ export const loginUser = createAsyncThunk<ILoginCredential, IUserLogin>(
   }
 );
 
-export const fetchCurrentUser = createAsyncThunk<ILoginCredential>(
-  'login/loginUser',
-  async (_, thunkAPI) => {
-    thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem('user')!)));
-    try {
-      const user = await Auth.loginSingleUser();
-      await AsyncStorage.setItem('user', JSON.stringify(user.result));
-      const value = await AsyncStorage.getItem('user');
-      console.log('AsyncStorage value', value);
-      return user.result;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue({ error: error.data });
-    }
-  },
-  {
-    condition: () => {
-      if (!localStorage.getItem('user')) return false;
-    },
-  }
-);
+// export const fetchCurrentUser = createAsyncThunk<ILoginCredential>(
+//   'login/loginUser',
+//   async (_, thunkAPI) => {
+//     thunkAPI.dispatch(setUser(AsyncStorage.getItem('user')!));
+//     try {
+//       const user = await Auth.loginSingleUser();
+//       console.log('user fetch', user);
+//       await AsyncStorage.setItem('user', JSON.stringify(user.result));
+//       const value = await AsyncStorage.getItem('user');
+//       console.log('AsyncStorage value', value);
+//       return user.result;
+//     } catch (error: any) {
+//       return thunkAPI.rejectWithValue({ error: error.data });
+//     }
+//   },
+//   {
+//     condition: () => {
+//       if (!AsyncStorage.getItem('user')) return false;
+//     },
+//   }
+// );
 
 export const loginSlice = createSlice({
   name: 'login',
@@ -69,44 +71,52 @@ export const loginSlice = createSlice({
   reducers: {
     signOut: (state) => {
       state.loginCredential = null;
-      localStorage.removeItem('user');
-      localStorage.removeItem('tokenLGED');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('userRole');
-      localStorage.removeItem('companyId');
-      window.location.reload();
+      // localStorage.removeItem('user');
+      // localStorage.removeItem('tokenLGED');
+      // localStorage.removeItem('userId');
+      // localStorage.removeItem('userRole');
+      // localStorage.removeItem('companyId');
+      // window.location.reload();
     },
     setUser: (state, action) => {
       state.loginCredential = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCurrentUser.rejected, (state) => {
-      state.loginCredential = null;
-      localStorage.removeItem('user');
-      showToast('error', 'Session expired - please login again');
-    });
-    builder.addMatcher(
-      isAnyOf(loginUser.fulfilled, fetchCurrentUser.fulfilled),
-      (state, action) => {
-        state.loginCredential = action.payload;
-      }
-    );
-    builder.addMatcher(isAnyOf(loginUser.rejected), (state, action) => {
-      console.log(action.payload);
-    });
+    // builder.addCase(fetchCurrentUser.rejected, (state, action) => {
+    //   console.log(' action rejjj', action);
+    //   state.loginCredential = null;
+    //   AsyncStorage.removeItem('user');
+    //   showToast('error', 'Session expired - please login again');
+    // });
+    // builder.addMatcher(
+    //   isAnyOf(loginUser.fulfilled, fetchCurrentUser.fulfilled),
+    //   (state, action) => {
+    //     console.log(' action full', action);
+    //     state.loginCredential = action.payload;
+    //   }
+    // );
+    // builder.addMatcher(isAnyOf(loginUser.rejected), (state, action) => {
+    //   console.log('state', state);
+    //   console.log('action', action);
+    //   console.log(action.payload);
+    // });
 
-    // builder.addCase(loginUser.pending, (state, action) => {
-    //   console.log(action);
-    //   state.status = 'pendingUserRegister';
-    // });
-    // builder.addCase(loginUser.fulfilled, (state, action) => {
-    //   state.loginCredential = action.payload;
-    //   state.status = 'idle';
-    // });
-    // builder.addCase(loginUser.rejected, (state) => {
-    //   state.status = 'idle';
-    // });
+    builder.addCase(loginUser.pending, (state, action) => {
+      console.log('action loging', action);
+      console.log('state loging', state);
+      state.status = 'pendingUserRegister';
+    });
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      console.log('action loging fulfilled', action);
+      state.loginCredential = action.payload;
+      state.status = 'idle';
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      console.log('state loging rejected', state);
+      console.log('action loging rejected', action);
+      state.status = 'idle';
+    });
   },
 });
 
