@@ -10,8 +10,9 @@ import Map from '../screens/Map';
 import PlaceDetails from '../screens/PlaceDetails';
 import LoginScreen from '../screens/LoginScreen';
 import { useCallback, useEffect } from 'react';
-import { fetchCurrentUser, loginUser } from '../features/login/loginSlice';
+import { loginUser } from '../features/login/loginSlice';
 import { IUserLogin } from '../models/baseModel';
+import { fetchCurrentUser } from '../features/login/persistanceLoginSlice';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +41,9 @@ const Layout: React.FunctionComponent = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    initApp();
+    if (isAuthenticated) {
+      initApp();
+    }
   }, [initApp]);
 
   return (

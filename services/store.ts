@@ -10,10 +10,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import { loginSlice } from '../features/login/loginSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { companyListSlice } from '../features/company/getCompanyListSlice';
+import { persistanceLoginSlice } from '../features/login/persistanceLoginSlice';
 
 export const store = configureStore({
   reducer: {
     login: loginSlice.reducer,
+    // persistanceLogin: persistanceLoginSlice.reducer,
     companyList: companyListSlice.reducer,
   },
 });

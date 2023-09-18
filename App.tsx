@@ -16,7 +16,6 @@ import { Provider } from 'react-redux';
 import { store, useAppDispatch, useAppSelector } from './services/store';
 import LoginScreen from './screens/LoginScreen';
 import Layout from './layout/Layout';
-import { fetchCurrentUser } from './features/login/loginSlice';
 // import {EXPO_PUBLIC_API_URL} from '@env'
 
 const Stack = createNativeStackNavigator();
