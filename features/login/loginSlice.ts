@@ -30,7 +30,7 @@ export const loginUser = createAsyncThunk<ILoginCredential, IUserLogin>(
     try {
       const uninterceptedAxiosInstance = axios.create();
       const user: any = await uninterceptedAxiosInstance
-        .post('https://apidev.lged.gov.bd/api/auth/login', data, axiosConfig)
+        .post('http://192.168.0.103:5000/api/auth/login', data, axiosConfig)
         .then((res) => res.data.result);
 
       // Auth.loginUser(data);
