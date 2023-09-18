@@ -21,11 +21,13 @@ const getData = async () => {
 interface LoginState {
   loginCredential: ILoginCredential | null;
   status: string;
+  isAuthenticated: boolean;
 }
 
 const initialState: LoginState = {
   loginCredential: null,
   status: 'idle',
+  isAuthenticated: false,
 };
 
 export const loginUser = createAsyncThunk<ILoginCredential, IUserLogin>(
@@ -62,7 +64,7 @@ export const loginUser = createAsyncThunk<ILoginCredential, IUserLogin>(
 );
 
 export const fetchCurrentUser = createAsyncThunk<ILoginCredential>(
-  'login/loginUser',
+  'login/fetchCurrentUser',
   async (_, thunkAPI) => {
     // getData()
     thunkAPI.dispatch(setUser(await AsyncStorage.getItem('user')!));
@@ -101,6 +103,7 @@ export const loginSlice = createSlice({
       AsyncStorage.removeItem('userId');
       AsyncStorage.removeItem('userRole');
       AsyncStorage.removeItem('companyId');
+      state.isAuthenticated = false;
     },
     setUser: (state, action) => {
       state.loginCredential = action.payload;
@@ -118,6 +121,7 @@ export const loginSlice = createSlice({
       (state, action) => {
         console.log(' action full', action);
         state.loginCredential = action.payload;
+        state.isAuthenticated = true;
       }
     );
     builder.addMatcher(isAnyOf(loginUser.rejected), (state, action) => {

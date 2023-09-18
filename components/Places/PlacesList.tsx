@@ -1,14 +1,22 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, Alert } from 'react-native';
 import PlaceItem from './PlaceItem';
 import { Colors } from '../../constants/colors';
 import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../../services/store';
+import { signOut } from '../../features/login/loginSlice';
 
 interface IPlacesListProps {
   places?: any;
 }
 
 const PlacesList: React.FunctionComponent<IPlacesListProps> = ({ places }) => {
+  const dispatch = useAppDispatch();
   const navigation: any = useNavigation();
+
+  function logOut() {
+    Alert.alert('Out');
+    dispatch(signOut());
+  }
 
   function selectPlaceHandler(id: any) {
     navigation.navigate('PlaceDetails', {
@@ -26,14 +34,17 @@ const PlacesList: React.FunctionComponent<IPlacesListProps> = ({ places }) => {
     );
   }
   return (
-    <FlatList
-      style={styles.list}
-      data={places}
-      keyExtractor={(item) => item.id}
-      renderItem={(item) => (
-        <PlaceItem place={item.item} onSelect={selectPlaceHandler} />
-      )}
-    />
+    <View>
+      <Button title='Logout' onPress={logOut} />
+      <FlatList
+        style={styles.list}
+        data={places}
+        keyExtractor={(item) => item.id}
+        renderItem={(item) => (
+          <PlaceItem place={item.item} onSelect={selectPlaceHandler} />
+        )}
+      />
+    </View>
   );
 };
 

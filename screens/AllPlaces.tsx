@@ -60,7 +60,7 @@ const AllPlaces: React.FunctionComponent<IAllPlacesProps> = ({ route }) => {
     rundispatch();
 
     getData();
-  }, [rundispatch, data]);
+  }, [dispatch, rundispatch, data]);
 
   useEffect(() => {
     async function loadPlaces() {
@@ -91,11 +91,11 @@ const AllPlaces: React.FunctionComponent<IAllPlacesProps> = ({ route }) => {
     // });
   };
   return (
-    <View>
-      {/* <PlacesList places={loadedPlaces} />; */}
-      <Button title='Show toast' onPress={showToastHere} />
-    </View>
-    // <PlacesList places={loadedPlaces} />
+    // <View>
+    //   {/* <PlacesList places={loadedPlaces} />; */}
+    //   <Button title='Show toast' onPress={showToastHere} />
+    // </View>
+    <PlacesList places={loadedPlaces} />
   );
 };
 
