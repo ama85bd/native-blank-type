@@ -24,8 +24,8 @@ const AllPlaces: React.FunctionComponent<IAllPlacesProps> = ({ route }) => {
   const { companyListLoaded, status } = useAppSelector(
     (state) => state.companyList
   );
-  const companyList = useAppSelector(companyListSelector.selectAll);
-  console.log('companyList', companyList);
+  // const companyList = useAppSelector(companyListSelector.selectAll);
+  // console.log('companyList', companyList);
 
   const [loadedPlaces, setLoadedPlaces] = useState<any>([]);
   const isFocused = useIsFocused();
@@ -46,21 +46,21 @@ const AllPlaces: React.FunctionComponent<IAllPlacesProps> = ({ route }) => {
     }
   };
 
-  const data: IUserLogin = {
-    email: 'ashique@lged.gov.bd',
-    password: 'Lged@1234',
-  };
-  const rundispatch = async () => {
-    await dispatch(loginUser(data)).then((e) => {
-      console.log('e place all', e);
-      setAsyncStorage(true);
-    });
-  };
-  useEffect(() => {
-    rundispatch();
+  // const data: IUserLogin = {
+  //   email: 'ashique@lged.gov.bd',
+  //   password: 'Lged@1234',
+  // };
+  // const rundispatch = async () => {
+  //   await dispatch(loginUser(data)).then((e) => {
+  //     console.log('e place all', e);
+  //     setAsyncStorage(true);
+  //   });
+  // };
+  // useEffect(() => {
+  //   rundispatch();
 
-    getData();
-  }, [dispatch, rundispatch, data]);
+  //   getData();
+  // }, [dispatch, rundispatch, data]);
 
   useEffect(() => {
     async function loadPlaces() {
@@ -77,9 +77,9 @@ const AllPlaces: React.FunctionComponent<IAllPlacesProps> = ({ route }) => {
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    if (!companyListLoaded) dispatch(fetchCompanyList());
-  }, [companyListLoaded]);
+  // useEffect(() => {
+  //   if (!companyListLoaded) dispatch(fetchCompanyList());
+  // }, [companyListLoaded]);
 
   const showToastHere = () => {
     showToast('info', 'Hello', 'This is some something 👋');

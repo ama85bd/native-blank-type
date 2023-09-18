@@ -20,35 +20,31 @@ const Layout: React.FunctionComponent = () => {
   const { isAuthenticated } = useAppSelector((state) => state.login);
   console.log('isAuthenticated', isAuthenticated);
 
-  //   const data: IUserLogin = {
-  //     email: 'ashique@lged.gov.bd',
-  //     password: 'Lged@1234',
-  //   };
-  //   const rundispatch = async () => {
-  //     await dispatch(loginUser(data));
-  //   };
-  //   useEffect(() => {
-  //     rundispatch();
-  //   }, [rundispatch, data]);
+  // const data: IUserLogin = {
+  //   email: 'ashique@lged.gov.bd',
+  //   password: 'Lged@1234',
+  // };
+  // const rundispatch = async () => {
+  //   await dispatch(loginUser(data));
+  // };
+  // useEffect(() => {
+  //   rundispatch();
+  // }, [rundispatch, data]);
 
-  //   const initApp = useCallback(async () => {
-  //     try {
-  //       await dispatch(fetchCurrentUser());
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }, [dispatch]);
+  const initApp = useCallback(async () => {
+    try {
+      await dispatch(fetchCurrentUser());
+    } catch (error) {
+      console.log(error);
+    }
+  }, [dispatch]);
 
-  //   useEffect(() => {
-  //     initApp();
-  //   }, [initApp]);
+  useEffect(() => {
+    initApp();
+  }, [initApp]);
 
   return (
     <NavigationContainer>
-      {/* {!isAuthenticated ? (
-        <Stack.Screen name='Login' component={LoginScreen} />
-      ) : (
-        <> */}
       <Stack.Navigator
         screenOptions={{
           headerStyle: { backgroundColor: Colors.primary500 },
@@ -57,46 +53,49 @@ const Layout: React.FunctionComponent = () => {
         }}
       >
         {/* <Stack.Screen name='UserLocation' component={UserLocation} /> */}
-
-        <Stack.Screen
-          name='AllPlaces'
-          component={AllPlaces}
-          options={({ navigation }) => ({
-            title: 'Your Favorite Places',
-            headerRight: ({ tintColor }) => (
-              <IconButton
-                icon='add'
-                size={24}
-                color={tintColor}
-                onPress={() => navigation.navigate('AddPlace')}
-              />
-            ),
-          })}
-        />
-        <Stack.Screen
-          name='AddPlace'
-          component={AddPlace}
-          options={{
-            title: 'Add a new place',
-          }}
-        />
-        <Stack.Screen
-          name='Map'
-          component={Map}
-          options={{
-            title: 'Map Page',
-          }}
-        />
-        <Stack.Screen
-          name='PlaceDetails'
-          component={PlaceDetails}
-          options={{
-            title: 'Loading place...',
-          }}
-        />
+        {!isAuthenticated ? (
+          <Stack.Screen name='Login' component={LoginScreen} />
+        ) : (
+          <>
+            <Stack.Screen
+              name='AllPlaces'
+              component={AllPlaces}
+              options={({ navigation }) => ({
+                title: 'Your Favorite Places',
+                headerRight: ({ tintColor }) => (
+                  <IconButton
+                    icon='add'
+                    size={24}
+                    color={tintColor}
+                    onPress={() => navigation.navigate('AddPlace')}
+                  />
+                ),
+              })}
+            />
+            <Stack.Screen
+              name='AddPlace'
+              component={AddPlace}
+              options={{
+                title: 'Add a new place',
+              }}
+            />
+            <Stack.Screen
+              name='Map'
+              component={Map}
+              options={{
+                title: 'Map Page',
+              }}
+            />
+            <Stack.Screen
+              name='PlaceDetails'
+              component={PlaceDetails}
+              options={{
+                title: 'Loading place...',
+              }}
+            />
+          </>
+        )}
       </Stack.Navigator>
-      {/* </>
-      )} */}
     </NavigationContainer>
   );
 };

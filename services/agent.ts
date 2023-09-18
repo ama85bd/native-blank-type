@@ -2,26 +2,50 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import showToast from '../utils/Toast';
 import { IResponseBase } from '../models/baseModel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 // axios.defaults.baseURL = 'https://apidev.lged.gov.bd/api/';
 axios.defaults.baseURL = process.env.EXPO_PUBLIC_API_URL;
 console.log('process.env.EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL);
 const responseBody = (response: AxiosResponse) => response.data;
+let tokenGet: any = '';
 
-axios.interceptors.request.use(async (config) => {
-  const token: any = await AsyncStorage.getItem('tokenLGED')?.then((e: any) =>
-    e.slice(1, -1)
-  );
-  console.log('token agent', token);
-  // console.log('user', user);
-  // const token = store.getState().login.loginCredential?.token;
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  const companyId = await AsyncStorage.getItem('companyId')?.then((e: any) =>
-    e.slice(1, -1)
-  );
-  if (companyId) config.headers['x-lged-company-id'] = companyId;
-  return config;
-});
+const getToken = async () => await AsyncStorage.getItem('tokenLGED');
+// console.log('token async', token);
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('user');
+    const tokenLGED = await AsyncStorage.getItem('tokenLGED');
+    const userRole = await AsyncStorage.getItem('userRole');
+    if (value !== null) {
+      tokenGet = tokenLGED;
+    } else {
+      console.log('Value not found.');
+    }
+  } catch (error) {
+    console.error('Error getting data:', error);
+  }
+};
+getData();
+console.log('tokenGet', tokenGet);
+// getToken();
+// console.log('getToken()', getData().then());
+// axios.interceptors.request.use(async (config) => {
+//   const token: any = await AsyncStorage.getItem('tokenLGED')?.then((e: any) =>
+//     e.slice(1, -1)
+//   );
+//   console.log('token agent', token);
+//   // console.log('user', user);
+//   // const token = store.getState().login.loginCredential?.token;
+//   if (token) config.headers.Authorization = `Bearer ${token}`;
+//   const companyId = await AsyncStorage.getItem('companyId')?.then((e: any) =>
+//     e.slice(1, -1)
+//   );
+
+//   console.log('companyId agent', companyId);
+//   if (companyId) config.headers['x-lged-company-id'] = companyId;
+//   return config;
+// });
 
 axios.interceptors.response.use(
   async (response) => {
